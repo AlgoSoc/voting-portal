@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --branddark: #0b0000;
+  --brandlight: #f6f6e9;
+  --brandyellow: #ffce6d;
+  --brandgray: #545454;
+}
+
+body {
+  color: var(--brandlight);
+  background: var(--branddark);
+}
