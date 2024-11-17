@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "AlgoSoc Voting Portal",
-  description: "Vote!",
+  title: 'AlgoSoc Voting Portal',
+  description: 'Vote!',
 };
 
 export default function RootLayout({
@@ -13,9 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
