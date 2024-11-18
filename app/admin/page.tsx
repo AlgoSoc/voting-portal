@@ -1,6 +1,6 @@
 'use client';
 
-import { getVoteTable, setElectionTopic } from '@/tools/user';
+import { getVoteTable, setElectionTopic } from '@/utils/user';
 import { useEffect, useState } from 'react';
 
 export default function Home() {

@@ -1,6 +1,7 @@
 'use client';
 
-import { getElectionTopic, login, vote } from '@/tools/user';
+import { getMemberStudentIds } from '@/utils/scraper';
+import { getElectionTopic, login, vote } from '@/utils/user';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -23,12 +24,18 @@ export default function Home() {
     alert(voteResult[1]);
   }
 
-  useEffect(() => {
-    setInterval(() => {
-      getElectionTopic().then((topic) => {
-        setElectionTopic(topic);
+  function test() {
+    getMemberStudentIds()
+      .then((memberIds) => {
+        console.log('Fetching complete');
+      })
+      .catch((error) => {
+        console.error('An error occurred:', error);
       });
-    }, 1000);
+  }
+
+  useEffect(() => {
+    test();
   }, []);
 
   return (
