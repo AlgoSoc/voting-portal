@@ -2,7 +2,9 @@
 
 import * as cheerio from 'cheerio';
 
-export async function getMemberStudentIds(): Promise<Set<string>> {
+export async function getMemberStudentIds(): Promise<
+  { firstName: string; lastName: string; studentId: string }[]
+> {
   if (
     !process.env.NEXT_PUBLIC_MEMBER_LIST_URL ||
     !process.env.NEXT_PUBLIC_ASPXAUTH_COOKIE
@@ -25,7 +27,11 @@ export async function getMemberStudentIds(): Promise<Set<string>> {
 
   const $ = cheerio.load(html);
 
-  const guildMemberIds = new Set<string>();
+  const guildMembers: {
+    firstName: string;
+    lastName: string;
+    studentId: string;
+  }[] = [];
 
   const MEMBER_HTML_TABLE_IDS = new Set([
     'ctl00_ctl00_Main_AdminPageContent_gvMembers',
@@ -39,14 +45,26 @@ export async function getMemberStudentIds(): Promise<Set<string>> {
         const cells = $(element).find('td');
         if (cells.length >= 2) {
           const name = $(cells[0]).text().trim();
-          const cardNumber = $(cells[1]).text().trim();
-          guildMemberIds.add(cardNumber);
-          console.log(`Name: ${name}, Card Number: ${cardNumber}`);
+          const studentId = $(cells[1]).text().trim();
+
+          const [lastName, firstName] = name
+            .split(',')
+            .map((part) => part.trim());
+
+          guildMembers.push({
+            firstName,
+            lastName,
+            studentId,
+          });
+
+          // console.log(
+          //   `Name: ${firstName} ${lastName}, Card Number: ${studentId}`
+          // );
         }
       }
     );
   });
 
-  console.log(`Total unique members: ${guildMemberIds.size}`);
-  return guildMemberIds;
+  // console.log(`Total unique members: ${guildMembers.length}`);
+  return guildMembers;
 }

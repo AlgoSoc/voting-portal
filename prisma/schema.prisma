@@ -19,6 +19,7 @@ model User {
   firstName String
   lastName  String
   isAdmin   Boolean  @default(false)
+  studentId String   @unique
   votes     Vote[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
