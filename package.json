@@ -1,46 +1,39 @@
 {
-  "name": "algosoc-voting-portal",
-  "version": "0.1.0",
+  "name": "voting-portal",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky",
-    "db:migrate": "npx prisma migrate dev",
-    "db:generate": "npx prisma generate",
-    "db:seed": "npx prisma db seed"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "cheerio": "^1.0.0",
-    "next": "15.0.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "db:generate": "cd packages/db && npx prisma generate && cd ../..",
+    "db:seed": "cd packages/db && npx prisma db seed && cd ../..",
+    "db:migrate": "cd packages/db && npx prisma migrate dev && cd ../..",
+    "ui:build": "cd packages/ui && npm run build && cd ../..",
+    "ui:dev": "cd packages/ui && npm run dev && cd ../.."
   },
   "devDependencies": {
-    "@types/node": "^20.17.6",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^9.15.0",
-    "eslint-config-next": "^15.0.3",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
-    "postcss": "^8",
-    "prettier": "^3.3.3",
-    "prisma": "^5.22.0",
-    "tailwindcss": "^3.4.1",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.2",
+    "typescript": "^5.4.5"
   },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.8.3",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,md}": [
+    "apps/**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
+    ],
+    "packages/**/*.{js,jsx,ts,tsx,json,css,md}": [
       "prettier --write"
     ]
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   }
 }
