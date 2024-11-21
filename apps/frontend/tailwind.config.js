@@ -10,18 +10,4 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     // "../../packages/ui/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: {
-    extend: {
-      colors: {
-        branddark: 'var(--branddark)',
-        brandlight: 'var(--brandlight)',
-        brandyellow: 'var(--brandyellow)',
-        brandgray: 'var(--brandgray)',
-      },
-      fontFamily: {
-        outfit: ['"Outfit"', 'sans-serif'],
-      },
-    },
-  },
-  plugins: [],
 };
