@@ -1,57 +1,86 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getVoteTable, setElectionTopic } from 'utils/user';
+import { Button, Card, CardContent, Input } from '@repo/ui';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-export default function Home() {
-  const [adminPin, setAdminPin] = useState('');
-  const [desiredET, setDesiredET] = useState('');
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  async function setElectionTopicClient() {
-    await setElectionTopic(adminPin, desiredET);
-  }
+export default function Component() {
+  const [studentId, setStudentId] = useState('');
+  const [pin, setPin] = useState('');
+  const router = useRouter();
 
-  let lastInterval: NodeJS.Timeout;
-  useEffect(() => {
-    clearInterval(lastInterval);
-    lastInterval = setInterval(async () => {
-      console.table(await getVoteTable(adminPin));
-    }, 5000);
-  }, [adminPin]);
+  const handleLogin = async () => {
+    try {
+      const payload = {
+        studentId,
+        pin,
+      };
+
+      const response = await axios.post(
+        `${API_BASE_URL}/api/v1/admin/login`,
+        payload,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        router.push('/admin/adminDashboard');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
-    <div className="p-8 font-outfit">
-      <div className="flex justify-center items-center gap-2">
-        <img src="icon.png" className="w-20" />
-        <p className="text-3xl text-brandlight">AlgoSoc Voting Portal</p>
-        <p className="text-2xl text-brandlight">Admin Panel</p>
+    <div className="min-h-screen w-full bg-black font-outfit flex flex-col items-center justify-center p-6">
+      <div className="flex items-center gap-4 mb-10">
+        <img src="icon.png" className="w-24" alt="AlgoSoc Icon" />
+        <h1 className="text-3xl font-bold text-white">
+          AlgoSoc Voting Portal (Admin)
+        </h1>
       </div>
-
-      <div className="bg-brandlight p-4 mt-4 rounded-lg">
-        <p className="text-2xl text-branddark mt-4">Admin PIN</p>
-        <input
-          type="password"
-          className="text-2xl text-brandlight bg-branddark p-2 rounded-lg"
-          onChange={(e) => setAdminPin(e.target.value)}
-        />
-        <br />
-      </div>
-
-      <div className="bg-brandlight p-4 mt-4 rounded-lg">
-        <p className="text-2xl text-branddark">Set election topic</p>
-        <input
-          type="text"
-          className="text-2xl text-brandlight bg-branddark p-2 rounded-lg"
-          onChange={(e) => setDesiredET(e.target.value)}
-        />
-        <br />
-        <button
-          className="text-2xl text-brandlight bg-brandgray py-2 px-4 mt-4 rounded-lg"
-          onClick={setElectionTopicClient}
-        >
-          Set election topic
-        </button>
-      </div>
+      <Card className="w-full max-w-md bg-[#FFFBF0] shadow-lg rounded-xl">
+        <CardContent className="p-8 space-y-8">
+          <div className="space-y-4">
+            <label
+              htmlFor="student-id"
+              className="block text-lg font-semibold text-gray-700"
+            >
+              Student ID
+            </label>
+            <Input
+              id="student-id"
+              className="h-12 bg-yellow-100 text-black border-2 border-yellow-400 focus:ring-2 focus:ring-yellow-400 rounded-lg"
+              type="text"
+              onChange={(e) => setStudentId(e.target.value)}
+            />
+          </div>
+          <div className="space-y-4">
+            <label
+              htmlFor="pin"
+              className="block text-lg font-semibold text-gray-700"
+            >
+              PIN
+            </label>
+            <Input
+              id="pin"
+              className="h-12 bg-yellow-100 text-black border-2 border-yellow-400 focus:ring-2 focus:ring-yellow-400 rounded-lg"
+              type="password"
+              onChange={(e) => setPin(e.target.value)}
+            />
+          </div>
+        </CardContent>
+      </Card>
+      <Button
+        className="w-32 h-12 mt-6 bg-[#4A4A4A] text-white rounded-lg shadow-md hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-200 ease-in-out"
+        onClick={handleLogin}
+      >
+        Log in
+      </Button>
     </div>
   );
 }

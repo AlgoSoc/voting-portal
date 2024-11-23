@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { userRouter } from './routes/user';
 import cookieParser from 'cookie-parser';
+import { adminRouter } from './routes/admin';
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(cookieParser());
 const PORT = process.env.PORT || 8000;
 
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/admin', adminRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
